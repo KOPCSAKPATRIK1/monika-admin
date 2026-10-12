@@ -1,0 +1,60 @@
+<form [formRoot]="form" class="card shadow-sm mb-4">
+  <div class="card-header fw-semibold">{{ isExisting() ? 'Edit video' : 'New video' }}</div>
+
+  <div class="card-body">
+    <div class="row g-3">
+      @let videoIdError = errorOf(form.videoId());
+      <div class="col-md-8">
+        <label for="vid-id" class="form-label">Video id (file name)</label>
+        <input
+          id="vid-id"
+          class="form-control"
+          [formField]="form.videoId"
+          [class.is-invalid]="videoIdError"
+        />
+        @if (videoIdError) {
+          <div class="invalid-feedback">{{ videoIdError }}</div>
+        } @else if (isRenaming()) {
+          <div class="form-text">Segments using the old id will be updated too.</div>
+        }
+      </div>
+
+      @let durationError = errorOf(form.duration());
+      <div class="col-md-4">
+        <label for="vid-duration" class="form-label">Duration</label>
+        <input
+          id="vid-duration"
+          class="form-control"
+          placeholder="mm:ss"
+          [formField]="form.duration"
+          [class.is-invalid]="durationError"
+        />
+        @if (durationError) {
+          <div class="invalid-feedback">{{ durationError }}</div>
+        }
+      </div>
+
+      <div class="col-12">
+        <label for="vid-title" class="form-label">Title</label>
+        <input id="vid-title" class="form-control" [formField]="form.title" />
+      </div>
+
+      <div class="col-12">
+        <label for="vid-url" class="form-label">Path or URL</label>
+        <input
+          id="vid-url"
+          class="form-control"
+          placeholder="videos/example.mp4"
+          [formField]="form.url"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer d-flex gap-2 justify-content-end">
+    <button type="button" class="btn btn-outline-secondary" (click)="cancelled.emit()">
+      Cancel
+    </button>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </div>
+</form>

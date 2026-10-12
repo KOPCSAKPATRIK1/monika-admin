@@ -1,0 +1,180 @@
+<div class="d-flex flex-wrap gap-2 mb-3">
+  <button type="button" class="btn btn-primary" (click)="startNew()">New segment</button>
+
+  <label class="btn btn-outline-secondary mb-0">
+    Import CSV/JSON
+    <input
+      type="file"
+      accept=".csv,.json,text/csv,application/json"
+      hidden
+      (change)="onImport($event)"
+    />
+  </label>
+
+  <div class="btn-group">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      [disabled]="store.segments().length === 0"
+      (click)="exportCsv()"
+    >
+      Export CSV
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      [disabled]="store.segments().length === 0"
+      (click)="exportJson()"
+    >
+      Export JSON
+    </button>
+  </div>
+</div>
+
+@if (message(); as msg) {
+  <div class="alert alert-dismissible" [class]="'alert-' + msg.type" role="status">
+    {{ msg.text }}
+    @if (msg.details.length > 0) {
+      <ul class="mb-0 mt-2 small">
+        @for (detail of msg.details; track $index) {
+          <li>{{ detail }}</li>
+        }
+      </ul>
+    }
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeMessage()"></button>
+  </div>
+}
+
+@if (editing() !== null) {
+  <app-segment-editor
+    [segment]="editingSegment()"
+    (saved)="onSaved($event)"
+    (cancelled)="closeEditor()"
+  />
+}
+
+<div class="row g-2 mb-3">
+  <div class="col-md-6">
+    <input
+      type="search"
+      class="form-control"
+      placeholder="Search title, description, keywords…"
+      aria-label="Search segments"
+      [formField]="filters.search"
+    />
+  </div>
+  <div class="col-6 col-md-3">
+    <select class="form-select" aria-label="Filter by topic" [formField]="filters.topic">
+      <option value="">All topics</option>
+      @for (topic of topics; track topic) {
+        <option [value]="topic">{{ topic }}</option>
+      }
+    </select>
+  </div>
+  <div class="col-6 col-md-3">
+    <select class="form-select" aria-label="Filter by video" [formField]="filters.videoId">
+      <option value="">All videos</option>
+      @for (videoId of videoOptions(); track videoId) {
+        <option [value]="videoId">{{ videoId }}</option>
+      }
+    </select>
+  </div>
+</div>
+
+@if (store.segments().length === 0) {
+  <div class="text-center text-body-secondary border rounded p-5">
+    No segments yet. Import a CSV/JSON file or add one with <strong>New segment</strong>.
+  </div>
+} @else {
+  <p class="small text-body-secondary mb-2">
+    {{ filteredSegments().length }} of {{ store.segments().length }} segments
+    @if (hasFilters()) {
+      ·
+      <button
+        type="button"
+        class="btn btn-link btn-sm p-0 align-baseline"
+        (click)="clearFilters()"
+      >
+        Clear filters
+      </button>
+    }
+  </p>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th scope="col">Video</th>
+          <th scope="col">Time</th>
+          <th scope="col">Title &amp; description</th>
+          <th scope="col">Topics</th>
+          <th scope="col">Keywords</th>
+          <th scope="col"><span class="visually-hidden">Actions</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (segment of filteredSegments(); track segment.id) {
+          <tr [class.table-active]="editingSegment()?.id === segment.id">
+            <td class="text-nowrap">
+              {{ segment.videoId }}
+              @if (!store.videoIds().has(segment.videoId)) {
+                <span class="badge text-bg-warning ms-1" title="Not in the videos table">?</span>
+              }
+            </td>
+            <td class="font-monospace">{{ segment.timestamp }}</td>
+            <td style="min-width: 16rem">
+              <div class="fw-semibold">{{ segment.title }}</div>
+              <div class="small text-body-secondary">{{ segment.description }}</div>
+            </td>
+            <td>
+              @for (topic of segment.topics; track topic) {
+                <span class="badge text-bg-primary me-1">{{ topic }}</span>
+              }
+            </td>
+            <td class="small">{{ segment.keywords.join(', ') }}</td>
+            <td class="text-end text-nowrap">
+              @if (deletingId() === segment.id) {
+                <span class="small me-2">Delete?</span>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-danger me-1"
+                  (click)="confirmDelete(segment)"
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  (click)="cancelDelete()"
+                >
+                  No
+                </button>
+              } @else {
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-primary me-1"
+                  (click)="startEdit(segment)"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="askDelete(segment)"
+                >
+                  Delete
+                </button>
+              }
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="text-center text-body-secondary py-4">
+              No segments match the filters.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

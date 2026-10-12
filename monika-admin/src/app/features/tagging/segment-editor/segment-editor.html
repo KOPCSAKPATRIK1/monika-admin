@@ -1,0 +1,112 @@
+<form [formRoot]="form" class="card shadow-sm mb-4">
+  <div class="card-header fw-semibold">{{ segment() ? 'Edit segment' : 'New segment' }}</div>
+
+  <div class="card-body">
+    <div class="row g-3">
+      @let videoIdError = errorOf(form.videoId());
+      <div class="col-md-8">
+        <label for="seg-video" class="form-label">Video id (file name)</label>
+        <input
+          id="seg-video"
+          class="form-control"
+          list="seg-video-options"
+          [formField]="form.videoId"
+          [class.is-invalid]="videoIdError"
+        />
+        <datalist id="seg-video-options">
+          @for (id of videoIds(); track id) {
+            <option [value]="id"></option>
+          }
+        </datalist>
+        @if (videoIdError) {
+          <div class="invalid-feedback">{{ videoIdError }}</div>
+        } @else if (isUnknownVideo()) {
+          <div class="form-text text-warning-emphasis">
+            This video isn't in the videos table yet.
+          </div>
+        }
+      </div>
+
+      @let timestampError = errorOf(form.timestamp());
+      <div class="col-md-4">
+        <label for="seg-time" class="form-label">Start time</label>
+        <input
+          id="seg-time"
+          class="form-control"
+          placeholder="mm:ss"
+          [formField]="form.timestamp"
+          [class.is-invalid]="timestampError"
+        />
+        @if (timestampError) {
+          <div class="invalid-feedback">{{ timestampError }}</div>
+        }
+      </div>
+
+      @let titleError = errorOf(form.title());
+      <div class="col-12">
+        <label for="seg-title" class="form-label">Short title</label>
+        <input
+          id="seg-title"
+          class="form-control"
+          [formField]="form.title"
+          [class.is-invalid]="titleError"
+        />
+        @if (titleError) {
+          <div class="invalid-feedback">{{ titleError }}</div>
+        }
+      </div>
+
+      @let descriptionError = errorOf(form.description());
+      <div class="col-12">
+        <label for="seg-description" class="form-label">Description</label>
+        <textarea
+          id="seg-description"
+          class="form-control"
+          rows="3"
+          [formField]="form.description"
+          [class.is-invalid]="descriptionError"
+        ></textarea>
+        @if (descriptionError) {
+          <div class="invalid-feedback">{{ descriptionError }}</div>
+        } @else {
+          <div class="form-text">{{ sentenceCount() }} / 3 sentences</div>
+        }
+      </div>
+
+      @let topicsError = errorOf(form.topics());
+      <fieldset class="col-12">
+        <legend class="form-label fs-6">Topics</legend>
+        <div class="d-flex flex-wrap gap-2">
+          @for (topic of topicOptions(); track topic) {
+            <input
+              type="checkbox"
+              class="btn-check"
+              [id]="'seg-topic-' + $index"
+              [checked]="isTopicSelected(topic)"
+              (change)="toggleTopic(topic)"
+            />
+            <label class="btn btn-sm btn-outline-primary" [for]="'seg-topic-' + $index">
+              {{ topic }}
+            </label>
+          }
+        </div>
+        @if (topicsError) {
+          <div class="invalid-feedback d-block">{{ topicsError }}</div>
+        }
+      </fieldset>
+
+      <div class="col-12">
+        <label for="seg-keywords" class="form-label">Keywords</label>
+        <input id="seg-keywords" class="form-control" [formField]="form.keywords" />
+        <div class="form-text">Separate with commas.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer d-flex gap-2 justify-content-end">
+    <button type="button" class="btn btn-outline-secondary" (click)="cancelled.emit()">
+      Cancel
+    </button>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </div>
+</form>
