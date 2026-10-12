@@ -5,18 +5,15 @@ import { AuthService } from '../../core/auth/auth.service';
 @Component({
   selector: 'app-dashboard',
   template: `
-    <main class="dashboard">
-      <h1>Dashboard</h1>
-      <p>Signed in as {{ auth.user()?.email }}</p>
-      <button type="button" (click)="logout()">Sign out</button>
+    <main class="container py-4">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <h1 class="h3 mb-0">Dashboard</h1>
+        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="logout()">
+          Sign out
+        </button>
+      </div>
+      <p class="text-body-secondary">Signed in as {{ auth.user()?.email }}</p>
     </main>
-  `,
-  styles: `
-    .dashboard {
-      padding: 2rem 1rem;
-      max-width: 60rem;
-      margin: 0 auto;
-    }
   `,
 })
 export class Dashboard {

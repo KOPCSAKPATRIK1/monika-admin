@@ -12,7 +12,6 @@ interface LoginModel {
   selector: 'app-login',
   imports: [FormRoot, FormField],
   templateUrl: './login.html',
-  styleUrl: './login.css',
 })
 export class Login {
   private readonly auth = inject(AuthService);
