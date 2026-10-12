@@ -1,0 +1,60 @@
+<main class="login">
+  <section class="card" aria-labelledby="login-title">
+    <header>
+      <h1 id="login-title">Sign in</h1>
+      <p class="subtitle">Monika Admin</p>
+    </header>
+
+    <form [formRoot]="loginForm">
+      @for (error of loginForm().errors(); track $index) {
+        <p class="form-error" role="alert">{{ error.message }}</p>
+      }
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          autocomplete="username"
+          [formField]="loginForm.email"
+          [attr.aria-invalid]="loginForm.email().touched() && loginForm.email().invalid()"
+          aria-describedby="email-error"
+        />
+        @if (loginForm.email().touched() && loginForm.email().invalid()) {
+          <p id="email-error" class="field-error">{{ loginForm.email().errors()[0].message }}</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="password">
+          <input
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            autocomplete="current-password"
+            [formField]="loginForm.password"
+            [attr.aria-invalid]="loginForm.password().touched() && loginForm.password().invalid()"
+            aria-describedby="password-error"
+          />
+          <button
+            type="button"
+            class="toggle"
+            (click)="showPassword.update((v) => !v)"
+            [attr.aria-pressed]="showPassword()"
+          >
+            {{ showPassword() ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+        @if (loginForm.password().touched() && loginForm.password().invalid()) {
+          <p id="password-error" class="field-error">
+            {{ loginForm.password().errors()[0].message }}
+          </p>
+        }
+      </div>
+
+      <button type="submit" class="submit" [disabled]="loginForm().submitting()">
+        {{ loginForm().submitting() ? 'Signing in…' : 'Sign in' }}
+      </button>
+    </form>
+  </section>
+</main>
