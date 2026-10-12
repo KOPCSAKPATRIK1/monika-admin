@@ -7,8 +7,8 @@ export interface User {
 const STORAGE_KEY = 'monika-admin.user';
 
 // TODO: Replace with a real API call once the backend exists.
-const DEMO_EMAIL = 'admin@example.com';
-const DEMO_PASSWORD = 'admin123';
+const DEMO_EMAIL = 'admin@gmail.com';
+const DEMO_PASSWORD = 'admin';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

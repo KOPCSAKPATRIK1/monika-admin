@@ -49,8 +49,8 @@ describe('Login', () => {
   it('navigates home after a successful login', async () => {
     const navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
     const { el, type, submit } = setup();
-    type('#email', 'admin@example.com');
-    type('#password', 'admin123');
+    type('#email', 'admin@gmail.com');
+    type('#password', 'admin');
     await submit();
     expect(navigate).toHaveBeenCalledWith('/');
     expect(el.querySelector('.form-error')).toBeNull();
