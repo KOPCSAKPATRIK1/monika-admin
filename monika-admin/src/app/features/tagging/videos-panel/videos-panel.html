@@ -1,0 +1,164 @@
+<div class="d-flex flex-wrap gap-2 mb-3">
+  <button type="button" class="btn btn-primary" (click)="startNew()">New video</button>
+
+  <label class="btn btn-outline-secondary mb-0">
+    Import CSV/JSON
+    <input
+      type="file"
+      accept=".csv,.json,text/csv,application/json"
+      hidden
+      (change)="onImport($event)"
+    />
+  </label>
+
+  <div class="btn-group">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      [disabled]="store.videos().length === 0"
+      (click)="exportCsv()"
+    >
+      Export CSV
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      [disabled]="store.videos().length === 0"
+      (click)="exportJson()"
+    >
+      Export JSON
+    </button>
+  </div>
+</div>
+
+@if (message(); as msg) {
+  <div class="alert alert-dismissible" [class]="'alert-' + msg.type" role="status">
+    {{ msg.text }}
+    @if (msg.details.length > 0) {
+      <ul class="mb-0 mt-2 small">
+        @for (detail of msg.details; track $index) {
+          <li>{{ detail }}</li>
+        }
+      </ul>
+    }
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeMessage()"></button>
+  </div>
+}
+
+@if (missingVideoIds().length > 0) {
+  <div class="alert alert-warning">
+    Segments refer to {{ missingVideoIds().length }} video(s) that aren't in this table:
+    <div class="d-flex flex-wrap gap-1 mt-2">
+      @for (videoId of missingVideoIds(); track videoId) {
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-dark"
+          (click)="startNewWithId(videoId)"
+        >
+          + {{ videoId }}
+        </button>
+      }
+    </div>
+  </div>
+}
+
+@if (editing() !== null) {
+  <app-video-editor
+    [video]="editingVideo()"
+    (saved)="onSaved($event)"
+    (cancelled)="closeEditor()"
+  />
+}
+
+@if (store.videos().length === 0) {
+  <div class="text-center text-body-secondary border rounded p-5">
+    No videos yet. Import a CSV/JSON file or add one with <strong>New video</strong>.
+  </div>
+} @else {
+  <div class="row g-2 mb-3">
+    <div class="col-md-6">
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Search id, title, path…"
+        aria-label="Search videos"
+        [formField]="filters.search"
+      />
+    </div>
+  </div>
+
+  <p class="small text-body-secondary mb-2">
+    {{ filteredVideos().length }} of {{ store.videos().length }} videos
+  </p>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th scope="col">Video id</th>
+          <th scope="col">Title</th>
+          <th scope="col">Path or URL</th>
+          <th scope="col">Duration</th>
+          <th scope="col" class="text-end">Segments</th>
+          <th scope="col"><span class="visually-hidden">Actions</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (video of filteredVideos(); track video.videoId) {
+          <tr [class.table-active]="editingVideo()?.videoId === video.videoId">
+            <td class="text-nowrap fw-semibold">{{ video.videoId }}</td>
+            <td>{{ video.title }}</td>
+            <td class="small text-break">{{ video.url }}</td>
+            <td class="font-monospace">{{ video.duration }}</td>
+            <td class="text-end">{{ segmentCount(video) }}</td>
+            <td class="text-end text-nowrap">
+              @if (deletingId() === video.videoId) {
+                <span class="small me-2">
+                  Delete?
+                  @if (segmentCount(video) > 0) {
+                    ({{ segmentCount(video) }} segments are kept)
+                  }
+                </span>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-danger me-1"
+                  (click)="confirmDelete(video)"
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  (click)="cancelDelete()"
+                >
+                  No
+                </button>
+              } @else {
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-primary me-1"
+                  (click)="startEdit(video)"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="askDelete(video)"
+                >
+                  Delete
+                </button>
+              }
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="text-center text-body-secondary py-4">
+              No videos match the search.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
