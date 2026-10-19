@@ -1,0 +1,46 @@
+@MonikaAdminApi_HostAddress = http://localhost:5107
+
+GET {{MonikaAdminApi_HostAddress}}/health
+
+###
+
+GET {{MonikaAdminApi_HostAddress}}/api/videos
+
+###
+
+POST {{MonikaAdminApi_HostAddress}}/api/videos/import
+Content-Type: application/json
+
+[
+  { "videoId": "bevezeto.mp4", "title": "Bevezető videó", "url": "videos/bevezeto.mp4", "duration": "8:20" },
+  { "videoId": "halado.mp4", "title": "Haladó témák", "url": "videos/halado.mp4", "duration": "1:02:15" }
+]
+
+###
+
+PUT {{MonikaAdminApi_HostAddress}}/api/videos/bevezeto.mp4
+Content-Type: application/json
+
+{ "videoId": "intro.mp4", "title": "Bevezető videó", "url": "videos/intro.mp4", "duration": "8:20" }
+
+###
+
+GET {{MonikaAdminApi_HostAddress}}/api/segments?videoId=intro.mp4
+
+###
+
+POST {{MonikaAdminApi_HostAddress}}/api/segments/import
+Content-Type: application/json
+
+[
+  {
+    "topics": ["Topic 1", "Topic 4"],
+    "keywords": ["bemutatkozás", "cél"],
+    "title": "Bevezető",
+    "description": "A videó céljának rövid bemutatása. Megismerjük, mire számíthatunk.",
+    "videoId": "bevezeto.mp4",
+    "timestamp": "0:00"
+  }
+]
+
+###

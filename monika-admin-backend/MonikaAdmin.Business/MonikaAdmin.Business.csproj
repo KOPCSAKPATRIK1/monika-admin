@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <!-- Csak az IQueryable aszinkron materializálásához (ToArrayAsync); DbContextet nem lát -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MonikaAdmin.Core\MonikaAdmin.Core.csproj" />
+  </ItemGroup>
+
+</Project>

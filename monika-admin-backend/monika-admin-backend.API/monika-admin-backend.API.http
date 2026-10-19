@@ -1,6 +1,0 @@
-@monika_admin_backend.API_HostAddress = http://localhost:5107
-
-GET {{monika_admin_backend.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
