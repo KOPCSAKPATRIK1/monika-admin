@@ -13,7 +13,6 @@ Look things up; don't answer from memory. Read the file a task touches before ch
 | .claude/conventions/data.md                | entities, DbContext, queries, migrations, repositories, SaveChanges, schema |
 | .claude/conventions/api.md                 | endpoints, controllers, OpenAPI, JSON, auth, outgoing HTTP |
 | .claude/conventions/di.md                  | registering or resolving services, lifetimes, options, the composition root |
-| .claude/conventions/ui.md                  | views, view models, XAML/Razor, commands, navigation, user-visible text |
 | .claude/conventions/validation.md          | input validation, error messages |
 | .claude/conventions/mapping.md             | DTOs, view-model lists, projections, mapping between layers |
 | .claude/conventions/style.md               | writing any C# (namespaces, fields, regions, comments, naming) |

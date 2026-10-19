@@ -8,7 +8,7 @@
 | providers                       | SQL Server |
 | Dapper                          | no |
 | DbContext MonikaAdminDbContext  | MonikaAdmin.Repository · MonikaAdmin.Repository/MonikaAdminDbContext.cs |
-| MonikaAdminDbContext entities   | none |
+| MonikaAdminDbContext entities   | Segment, Video |
 | DbContext registration          | AddDbContext |
 | model source                    | code-first (migrations) |
 | migrations folders              | MonikaAdmin.Repository/Migrations |

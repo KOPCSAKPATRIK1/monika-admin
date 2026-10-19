@@ -4,6 +4,7 @@
 
 | fact                 | value |
 | -------------------- | ----- |
+| entity               | MonikaAdmin.Core/Models/Domain/Video.cs |
 | entity configuration | MonikaAdmin.Repository/Configurations/VideoConfiguration.cs |
 | DbContext            | MonikaAdmin.Repository/MonikaAdminDbContext.cs |
 | repository           | MonikaAdmin.Repository/Repository.cs |
