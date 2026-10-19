@@ -5,6 +5,9 @@ managing the video list. No backend yet: auth is a demo and data lives in localS
 
 The Angular app is in `monika-admin/` (one level below the git root). Run every npm/ng command there.
 
+The ASP.NET Core backend is in `monika-admin-backend/` and has its own `CLAUDE.md` and `.claude/`.
+Nothing in this file or in this `.claude/` applies there.
+
 ## Before you touch an area, read its file
 
 Knowledge lives in these files, not here. Read the one the task touches; don't rely on memory.

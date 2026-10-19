@@ -1,0 +1,5 @@
+* text=auto
+*.cs text eol=crlf
+
+# kit: generated conventions are rebuilt with `kit-dotnet scan`, never merged line by line
+.claude/conventions/** merge=binary linguist-generated=true

@@ -1,0 +1,12 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build output
+bin/
+obj/
+
+# kit: local scan cache
+.claude/.state/
+.claude/settings.local.json

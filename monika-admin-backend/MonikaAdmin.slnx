@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+  </Folder>
+  <Project Path="MonikaAdmin.Api/MonikaAdmin.Api.csproj" />
+  <Project Path="MonikaAdmin.Business/MonikaAdmin.Business.csproj" />
+  <Project Path="MonikaAdmin.Core/MonikaAdmin.Core.csproj" />
+  <Project Path="MonikaAdmin.Repository/MonikaAdmin.Repository.csproj" />
+</Solution>
