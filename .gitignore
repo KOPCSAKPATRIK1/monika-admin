@@ -1,0 +1,3 @@
+# kit: local scan cache
+.claude/.state/
+.claude/settings.local.json

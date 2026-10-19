@@ -41,3 +41,9 @@ in one line. Don't silently pick.
 
 The code wins. If a convention file no longer matches the code, say so, and update the file in
 the same change. A new non-obvious decision goes in `decisions/traps.md`, not in this file.
+
+## Kit
+
+Generated map of conventions, decisions and contracts:
+
+@conventions/_router.md
